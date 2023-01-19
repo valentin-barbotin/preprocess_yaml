@@ -39,5 +39,11 @@ if [ $LENGTH -eq 0 ]; then
 fi
 
 for key in ${!tokens[@]}; do
-    sed "s/*$key/${tokens[$key]}/g" $INPUT > $OUTPUT
+    echo "Replacing $key with ${tokens[$key]}"
+
+    if [ "$INPUT" = "$OUTPUT" ]; then
+        sed -i "s/*$key/${tokens[$key]}/g" $INPUT
+    else
+        sed "s/*$key/${tokens[$key]}/g" $INPUT
+    fi
 done
