@@ -12,4 +12,4 @@ runs:
   steps:
     - name: Preprocess yaml
       shell: bash
-      run: process.sh ${{ inputs.file }} ${{ inputs.output }}
+      run: ${{ github.action_path }}/process.sh ${{ inputs.file }} ${{ inputs.output }}
