@@ -1,5 +1,25 @@
 #!/usr/bin/env bash
 
+INPUT=$1
+OUTPUT=$2
+
+if [ -z "$INPUT" ]; then
+    echo "Input file is required"
+    exit 1
+fi
+
+if [ -z "$OUTPUT" ]; then
+    echo "Output file is required"
+    exit 1
+fi
+
+if [ ! -f "$INPUT" ]; then
+    echo "Input file does not exist"
+    exit 1
+fi
+
+echo "Processing $INPUT"
+
 declare -A tokens
 
 while read line; do
@@ -9,8 +29,15 @@ while read line; do
         value=$(echo $line | cut -d'"' -f2)
         tokens[$key]=$value
     fi
-done < values.yaml
+done < $INPUT
+
+LENGTH=${#tokens[@]}
+
+if [ $LENGTH -eq 0 ]; then
+    echo "No tokens found"
+    exit 0
+fi
 
 for key in ${!tokens[@]}; do
-    sed "s/*$key/${tokens[$key]}/g" values.yaml
+    sed "s/*$key/${tokens[$key]}/g" $INPUT > $OUTPUT
 done
